@@ -1,0 +1,17 @@
+
+.error{
+    color: red;
+    font-size: 13px;
+    min-height: 25px;
+}
+
+
+.inputContainer{
+    width: auto;
+    height: auto;
+    /* border: 1px red solid; */
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    text-align: left;
+}

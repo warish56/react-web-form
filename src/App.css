@@ -13,6 +13,17 @@
   }
 }
 
+.app-conatiner{
+  width: 400px;
+  margin: 0 auto;
+}
+
+.input-text{
+  min-height: 30px;
+  border-radius: 5px;
+  outline: none;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
