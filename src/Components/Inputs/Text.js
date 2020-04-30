@@ -4,7 +4,7 @@ import Error from '../Error';
 
 import FormContext from '../../Context/FormContext'
 
-const TextField = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, validate, invalidText, emptyText, required, ...otherProps}) => {
+const TextField = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, validate, invalidText, emptyText, required, HeaderComponent, FooterComponent, label, errorClass='', className, ...otherProps}) => {
     const [value, setValue] = useState(() => defaultValue);
     const [isInvalid, setInvalid] = useState(false);
     const [gotFocus, setFocus] = useState(false);
@@ -47,7 +47,8 @@ const TextField = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, valid
         } else {
           target.setCustomValidity('');
         }
-
+        setInvalid(isInputInvalid);
+        setFocus(true);
         return isInputInvalid;
 
     }, [validate, invalidText, emptyText])
@@ -58,8 +59,7 @@ const TextField = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, valid
         setValue(val);
 
         if(gotFocus){
-        const isInputInvalid = checkAndSetError(e.target)
-        setInvalid(isInputInvalid);
+        checkAndSetError(e.target)
         }
         
         if(typeof onChange === 'function'){
@@ -73,10 +73,8 @@ const TextField = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, valid
 
     const onInvalidCalled = useCallback((e) => {
 
-        const isInputInvalid = checkAndSetError(e.target)
-        setInvalid(isInputInvalid);
-        setFocus(true);
-
+        checkAndSetError(e.target)
+        
         if(typeof onInvalid === 'function'){
             onInvalid(e)
         }
@@ -95,11 +93,11 @@ const TextField = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, valid
     
 
 const errorText = (isInvalid && gotFocus ? (value ? invalidText : emptyText) : '' );
-
     return (
         <div className="inputContainer">
-         <input {...otherProps} value={value} onBlur={onInputBlur} required={required} onChange={onInputChange} onInvalid={onInvalidCalled}/>
-         <Error  text={errorText}/>
+            { HeaderComponent && React.isValidElement(<HeaderComponent/>) ? <HeaderComponent label={label}/> : <label>{label}</label>}
+            <input {...otherProps} className={`${className} ${errorClass}`} value={value} onBlur={onInputBlur} required={required} onChange={onInputChange} onInvalid={onInvalidCalled}/>
+            {FooterComponent && React.isValidElement(<FooterComponent/>) ? <FooterComponent error={errorText}/> : <Error  text={errorText}/>}
         </div>
     )
 

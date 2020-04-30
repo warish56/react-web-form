@@ -4,7 +4,7 @@ import Error from '../Error';
 
 import FormContext from '../../Context/FormContext'
 
-const SelectInputManager = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, validate, invalidText, emptyText, required, placeholder, children, ...otherProps}) => {
+const SelectInputManager = memo(({id,onChange, defaultValue= '', onInvalid, onBlur, validate, invalidText, emptyText, required, placeholder, children, HeaderComponent, FooterComponent,label, className, errorClass='', ...otherProps}) => {
     const [value, setValue] = useState(() => defaultValue);
     const [isInvalid, setInvalid] = useState(false);
     const [gotFocus, setFocus] = useState(false);
@@ -48,6 +48,9 @@ const SelectInputManager = memo(({id,onChange, defaultValue= '', onInvalid, onBl
           target.setCustomValidity('');
         }
 
+        setInvalid(isInputInvalid);
+        setFocus(true);
+
         return isInputInvalid;
 
     }, [validate, invalidText, emptyText])
@@ -58,8 +61,7 @@ const SelectInputManager = memo(({id,onChange, defaultValue= '', onInvalid, onBl
         setValue(val);
 
         if(gotFocus){
-        const isInputInvalid = checkAndSetError(e.target)
-        setInvalid(isInputInvalid);
+        checkAndSetError(e.target)
         }
         
         if(typeof onChange === 'function'){
@@ -73,10 +75,8 @@ const SelectInputManager = memo(({id,onChange, defaultValue= '', onInvalid, onBl
 
     const onInvalidCalled = useCallback((e) => {
 
-        const isInputInvalid = checkAndSetError(e.target)
-        setInvalid(isInputInvalid);
-        setFocus(true);
-
+       checkAndSetError(e.target)
+       
         if(typeof onInvalid === 'function'){
             onInvalid(e)
         }
@@ -98,12 +98,13 @@ const errorText = (isInvalid && gotFocus ? (value ? invalidText : emptyText) : '
 
     return (
         <div className="inputContainer">
-         
-         <select {...otherProps} value={value} onBlur={onInputBlur} required={required} onChange={onInputChange} onInvalid={onInvalidCalled}>
+        { HeaderComponent && React.isValidElement(<HeaderComponent/>) ? <HeaderComponent label={label}/> : <label>{label}</label>}
+         <select {...otherProps}  className={`${className} ${errorClass}`} value={value} onBlur={onInputBlur} required={required} onChange={onInputChange} onInvalid={onInvalidCalled}>
             <option value="">{placeholder}</option>
             {children}
          </select>
-         <Error  text={errorText}/>
+         {FooterComponent && React.isValidElement(<FooterComponent/>) ? <FooterComponent error={errorText}/> : <Error  text={errorText}/>}
+
         </div>
     )
 
