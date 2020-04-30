@@ -44,7 +44,7 @@ function App() {
         />
 
 
-        <InputManager.RadioGroup id="hobby" required  emptyText="hobby required">
+        <InputManager.Group required id="hobby"   emptyText="hobby required">
         
         <div>
         <InputManager.Radio name="hobby" value="Marketing" />
@@ -66,7 +66,7 @@ function App() {
         <span>bashing</span>
         </div>
 
-        </InputManager.RadioGroup>
+        </InputManager.Group>
 
         <button type="submit">SUbmit</button>
       </FormManager>

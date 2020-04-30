@@ -2,7 +2,8 @@
 import Text from './Text';
 import TeaxtArea from './TextArea';
 import Select from './Select';
-import {Radio, RadioGroup} from './RadioGroup';
+import InputGroup from './InputGroup';
+import {Radio, CheckBox} from './MultipleInput'
 
 
 
@@ -11,7 +12,9 @@ const   InputManager = {
     TeaxtArea,
     Select,
     Radio,
-    RadioGroup,
+    CheckBox,
+    Group: InputGroup,
+
 };
 
 export default InputManager;
