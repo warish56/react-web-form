@@ -1,10 +1,11 @@
-import React from 'react';
+import React,{memo} from 'react';
 import './style.css';
 
-const Error = ({text}) => {
+const Error = memo(({text}) => {
     return (
     <span className="error">{text}</span>
     )
-}
+})
+Error.displayName = 'Error'
 
 export default Error;

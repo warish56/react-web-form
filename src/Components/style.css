@@ -9,9 +9,12 @@
 .inputContainer{
     width: auto;
     height: auto;
-    /* border: 1px red solid; */
     display: flex;
     flex-flow: column nowrap;
     align-items: stretch;
     text-align: left;
+}
+
+.input-element{
+    width: 100%;
 }

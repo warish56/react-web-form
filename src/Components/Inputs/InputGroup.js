@@ -2,21 +2,10 @@ import React, { useState, useEffect, useContext, useRef, useCallback, memo } fro
 import Error from '../Error';
 
 import FormContext from '../../Context/FormContext'
-import RadioContext from '../../Context/RadioContext'
+import InputGroupContext from '../../Context/InputGroupContext'
 
 
-export const Radio = memo(({id, value, ...otherProps}) => {
-
-    const {onChange, selectedValue,onInvalid } = useContext(RadioContext);
-
-    return (
-        <input {...otherProps}  onInvalid={onInvalid} value={value} onChange={onChange} checked={selectedValue === value} type="radio" />
-    )
-
-})
-
-
-export const RadioGroup = ({id, children, onChange, defaultValue='', emptyText, onInvalid }) =>{
+ const InputGroup = ({id, children, onChange, defaultValue='', emptyText, onInvalid, required=false }) =>{
 
     const [value, setValue] = useState( () => defaultValue);
     const [isInvalid, setInvalid] = useState(false);
@@ -87,11 +76,13 @@ export const RadioGroup = ({id, children, onChange, defaultValue='', emptyText, 
     return (
 
         <div>
-            <RadioContext.Provider value={{selectedValue:value, onChange:onInputChange, onInvalid: onInvalidCalled}}>
+            <InputGroupContext.Provider value={{selectedValue:value, onChange:onInputChange, onInvalid: onInvalidCalled, required}}>
             {children}
-            </RadioContext.Provider>
+            </InputGroupContext.Provider>
             <Error text={errorText}/>
         </div>
     )
 }
 
+
+export default InputGroup;

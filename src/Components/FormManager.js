@@ -1,15 +1,23 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect, useLayoutEffect } from 'react';
 
 
 import FormContext from '../Context/FormContext';
 
+let refs = {};
 const FormManager = ({children, onSubmit, ...otherProps})=>{
 
-    const [refs, setRef] = useState({});
+    const formRef = useRef();
 
     const registerInput = useCallback((id, ref) => {
-        setRef((prevRefs) => ({...prevRefs, [id]: ref}) )
+        refs={
+            ...refs,
+            [id]: ref
+        }
     }, [])
+
+    if(!formRef.current){
+        formRef.current = registerInput;
+    }
 
 
     const clearFields = useCallback(() => {
@@ -39,17 +47,15 @@ const FormManager = ({children, onSubmit, ...otherProps})=>{
 
     },[refs])
 
-
-    
-
-    return(
+    return (
 
         <form  {...otherProps} onSubmit={onFormSubmit}>
-        <FormContext.Provider value={registerInput}>
+        <FormContext.Provider value={formRef.current}>
          {children}
         </FormContext.Provider>
         </form>
     )
+    
 }
 
 export default FormManager;
