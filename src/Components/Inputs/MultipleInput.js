@@ -3,22 +3,25 @@ import React, { useContext,  memo } from 'react';
 import InputGroupContext from '../../Context/InputGroupContext'
 
 
-export const Radio = memo(({id, value, ...otherProps}) => {
+export const Radio = memo(({id, value, required, ...otherProps}) => {
 
-    const {onChange, selectedValue,onInvalid ,required} = useContext(InputGroupContext);
+    const {onChange, selectedValue,onInvalid ,isRequired} = useContext(InputGroupContext);
 
     return (
-        <input {...otherProps} required={required}  onInvalid={onInvalid} value={value} onChange={onChange} checked={selectedValue === value} type="radio" />
+        <input {...otherProps} required={isRequired}  onInvalid={onInvalid} value={value} onChange={onChange} checked={selectedValue === value} type="radio" />
+    )
+
+})
+Radio.displayName = 'Radio';
+
+export const CheckBox = memo(({id, value,  required, ...otherProps}) => {
+
+    const {onChange, selectedValue,onInvalid } = useContext(InputGroupContext);
+
+    return (
+        <input {...otherProps} checked={selectedValue[value] === true }   onInvalid={onInvalid} value={value} onChange={onChange}  type="checkbox" />
     )
 
 })
 
-export const CheckBox = memo(({id, value, ...otherProps}) => {
-
-    const {onChange, selectedValue,onInvalid, required } = useContext(InputGroupContext);
-
-    return (
-        <input {...otherProps} required={required}  onInvalid={onInvalid} value={value} onChange={onChange} checked={selectedValue === value} type="checkbox" />
-    )
-
-})
+CheckBox.displayName = 'CheckBox';

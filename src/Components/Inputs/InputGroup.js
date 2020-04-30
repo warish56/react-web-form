@@ -5,51 +5,128 @@ import FormContext from '../../Context/FormContext'
 import InputGroupContext from '../../Context/InputGroupContext'
 
 
- const InputGroup = ({id, children, onChange, defaultValue='', emptyText, onInvalid, required=false }) =>{
+ const InputGroup = ({id, children, onChange, defaultValue='', emptyText, onInvalid, required=false, HeaderComponent, FooterComponent, label  }) =>{
 
     const [value, setValue] = useState( () => defaultValue);
+    const [isCheckBox, setCheckBox] = useState(false);
     const [isInvalid, setInvalid] = useState(false);
     const [gotFocus, setFocus] = useState(false);
 
     const inputRef = useRef();
     const registerInput = useContext(FormContext);
 
+    useEffect(() => {
+       const childrenArray =  React.Children.toArray(children);
+      
+       let gotCheckBox = false
+       const isCheckBox = (childArray) => {
+        if(gotCheckBox){ return;}
+
+        for(let i =0 ; i< childArray.length ; i++){
+            if(gotCheckBox){ break;}
+         const child = childArray[i];
+
+            if(child.type.displayName === 'CheckBox'){
+                setCheckBox(true);
+                setValue(defaultValue ? {[defaultValue]: true}: {})
+                gotCheckBox= true;
+                break;
+            }
+
+            if(child.props.children && Array.isArray(child.props.children) && child.props.children.length > 0 ){
+                isCheckBox(child.props.children)
+            }
+        }
+       }
+
+       isCheckBox(childrenArray);
+
+       
+       
+    }, [])
+
     const  getValue =  useCallback(() => { return  value }, [value])
+
     const resetField = useCallback(() => {
 
+        if(isCheckBox){
+            setValue(defaultValue ? {[defaultValue]: true}: {}) 
+        }else{
         setValue(defaultValue ? defaultValue : '')
+        }
+        
 
         if(typeof onChange === 'function'){
         onChange(id, defaultValue ? defaultValue : '');
         }
     
-      },[onChange, id, defaultValue]);
+      },[onChange, id, defaultValue,isCheckBox]);
+
+      const checkAndSetError = useCallback(( target, targetValue = '') => {
+
+        let isInputInvalid = false;
+
+        if(targetValue){
+
+            switch(isCheckBox){
+                case true:  isInputInvalid = Object.keys(targetValue).length < 1; break;
+                case false: isInputInvalid = targetValue === ''; break;
+            }
+
+        }else{
+
+            switch(isCheckBox){
+                case true:  isInputInvalid = Object.keys(value).length < 1; break;
+                case false: isInputInvalid = value === ''; break;
+            }
+
+        }
+
+       
+        if(target){
+            if (isInputInvalid) {
+                target.setCustomValidity(emptyText);
+            } else {
+                target.setCustomValidity('');
+            }
+        }
+
+          setInvalid(isInputInvalid);
+          setFocus(true);
+        return isInputInvalid;
+    }, [value,emptyText, isCheckBox])
 
 
     useEffect(() => {
         if(typeof registerInput === 'function'){
-            inputRef.current = {getValue, resetField};
+            inputRef.current = {getValue, resetField, checkAndSetError};
             registerInput(id,inputRef.current);
         }
 
-    },[inputRef,getValue, resetField])
+    },[inputRef,getValue, resetField, checkAndSetError])
 
 
-    const checkAndSetError = useCallback((targetValue = '') => {
 
-        const isInputInvalid = targetValue ? targetValue === '' : value === '' ;
-        return isInputInvalid;
-    }, [value])
 
 
     const onInputChange = useCallback((e) => {
         const val = e.target.value;
-        console.log({value:val}, e.target, gotFocus)
+        let newCheckBoxVal = '';
+
+        if(isCheckBox){
+        const {checked} = e.target;
+        newCheckBoxVal = typeof value === 'object' ? {...value,[val]: checked} : {[val]: checked};
+          if(!checked){
+              delete newCheckBoxVal[val];
+          }
+        setValue(newCheckBoxVal);
+
+        }else{
         setValue(val);
+        }
 
         if(gotFocus){
-        const isInputInvalid = checkAndSetError(val)
-        setInvalid(isInputInvalid);
+        checkAndSetError(e.target,isCheckBox ? newCheckBoxVal : val);
         }
         
         if(typeof onChange === 'function'){
@@ -57,14 +134,11 @@ import InputGroupContext from '../../Context/InputGroupContext'
         }
 
 
-    },[id,onChange,gotFocus, checkAndSetError])
+    },[id,onChange,gotFocus, isCheckBox,checkAndSetError])
 
     const onInvalidCalled = useCallback((e) => {
 
-        const isInputInvalid = checkAndSetError()
-        setInvalid(isInputInvalid);
-        setFocus(true);
-
+        checkAndSetError(e.target)
         if(typeof onInvalid === 'function'){
             onInvalid(e)
         }
@@ -75,11 +149,12 @@ import InputGroupContext from '../../Context/InputGroupContext'
 
     return (
 
-        <div>
-            <InputGroupContext.Provider value={{selectedValue:value, onChange:onInputChange, onInvalid: onInvalidCalled, required}}>
+        <div className="inputContainer">
+            { HeaderComponent && React.isValidElement(<HeaderComponent/>) ? <HeaderComponent label={label}/> : <label>{label}</label>}
+            <InputGroupContext.Provider value={{selectedValue:value, onChange:onInputChange, onInvalid: onInvalidCalled, isRequired: required}}>
             {children}
             </InputGroupContext.Provider>
-            <Error text={errorText}/>
+            {FooterComponent && React.isValidElement(<FooterComponent/>) ? <FooterComponent error={errorText}/> : <Error  text={errorText}/>}
         </div>
     )
 }

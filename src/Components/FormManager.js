@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect, useLayoutEffect } from 'react';
+import React, {  useCallback, useRef} from 'react';
 
 
 import FormContext from '../Context/FormContext';
@@ -33,17 +33,23 @@ const FormManager = ({children, onSubmit, ...otherProps})=>{
     const onFormSubmit = useCallback((e) => {
         e.preventDefault();
         const data = {};
-        console.log(refs)
+        let isError = false;
         Object.keys(refs).forEach((refId) => {
-            const {getValue} = refs[refId];
+            const {getValue, checkAndSetError} = refs[refId];
             if(typeof getValue === 'function'){
                 data[refId] = getValue();
             }
+
+            if(typeof checkAndSetError === 'function'){
+                isError = checkAndSetError() || isError;
+            }
         })
 
-        if(typeof onSubmit === 'function'){
+        if(typeof onSubmit === 'function' && !isError){
             onSubmit(data,clearFields)
         }
+
+
 
     },[refs])
 
