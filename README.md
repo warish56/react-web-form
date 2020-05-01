@@ -1,68 +1,374 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# react-web-form
 
-## Available Scripts
+## Why?
+##### Great performant optimization. it will only re-render that input element which needs to be updated.
 
-In the project directory, you can run:
+## Installation
+`npm i react-web-form`
 
-### `yarn start`
+`yarn add react-web-form`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Usage
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+#### 1. TextInput
 
-### `yarn test`
+```javascript
+import React, { memo } from 'react';
+import {InputManager, FormManager} from 'react-web-form'
+import './App.css';
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+function App() {
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  const onSubmit = (data,resetForm) => {
+    console.log({data});
+    resetForm();
+  }
+  const isInvalidName = (val) => val.trim().length < 3;
+  return (
+    <div className="App">
+      <div className="app-conatiner">
+              <FormManager onSubmit={onSubmit}>
+                    <InputManager.Text
+                    id="name"  
+                    required 
+                    className="input-text"
+                    type="text"
+                    label="Name" 
+                    invalidText="name is invalid"
+                    emptyText="Name is required"
+                    validate={isInvalidName}
+                    />
+                    <button type="submit">SUbmit</button>
+              </FormManager>
+       </div>
+     </div>
+  );
+}
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+export default App;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
 
-### `yarn eject`
+### InputManager.Text ----- Props
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
+|required     |  if input filed is required deuring submit      |   false |
+|errorClass     |  css style className which will be apllied to input element when the field is invalid    |   false |
+| label | to display a label on top of input      |    false |
+| invalidText | text to display when the field is invalid      |    false |
+| emptyText |text to display when the field is empty       |    false |
+| validate | function to validate if the field is invalid or not      |    false |
+| HeaderComponent | a react component to display on top of input element      |    false |
+| FooterComponent |  a react component to display at bottom of input element and it will receive an error in props; |    false |
+| onChange | function will be called on every change and it will receive an (id, value) as params    |    false |
+| all other input props | all the props which are passed to an input element    |    false |
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### 2. SelectInput
 
-## Learn More
+```javascript
+import React, { memo } from 'react';
+import {InputManager, FormManager} from 'react-web-form'
+import './App.css';
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+function App() {
 
-### Code Splitting
+  const onSubmit = (data,resetForm) => {
+    console.log({data});
+    resetForm();
+  }
+  const isInvalidAnimal = (val) => val.trim().length < 3;
+  return (
+    <div className="App">
+      <div className="app-conatiner">
+              <FormManager onSubmit={onSubmit}>
+                   <InputManager.Select 
+                    id="animal"
+                    required 
+                    className="input-text"
+                    validate={isInvalidAnimal}
+                    emptyText="Animal is required" 
+                    placeholder="Select Animal"
+                    >
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="hamster">Hamster</option>
+                        <option value="parrot">Parrot</option>
+                    </InputManager.Select>
+                    <button type="submit">SUbmit</button>
+                </FormManager>
+       </div>
+     </div>
+  );
+}
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+export default App;
 
-### Analyzing the Bundle Size
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### InputManager.Select ----- Props
 
-### Making a Progressive Web App
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
+|required     |  if input filed is required deuring submit      |   false |
+|errorClass     |  css style className which will be apllied to input element when the field is invalid    |   false |
+| label | to display a label on top of input      |    false |
+| invalidText | text to display when the field is invalid      |    false |
+| emptyText |text to display when the field is empty       |    false |
+| validate | function to validate if the field is invalid or not      |    false |
+| HeaderComponent | a react component to display on top of input element      |    false |
+| FooterComponent |  a react component to display at bottom of input element and it will receive an error in props; |    false |
+| onChange | function will be called on every change and it will receive an (id, value) as params    |    false |
+| all other select props | all the props which are passed to an  select input element    |    false |
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-### Advanced Configuration
+#### 3. TextArea
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```javascript
+import React, { memo } from 'react';
+import {InputManager, FormManager} from 'react-web-form'
+import './App.css';
 
-### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+function App() {
 
-### `yarn build` fails to minify
+  const onSubmit = (data,resetForm) => {
+    console.log({data});
+    resetForm();
+  }
+  const isInvalidName = (val) => val.trim().length < 3;
+  return (
+    <div className="App">
+      <div className="app-conatiner">
+              <FormManager onSubmit={onSubmit}>
+                    <InputManager.TeaxtArea
+                    id="name"  
+                    required 
+                    className="input-text"
+                    type="text"
+                    label="Name" 
+                    invalidText="name is invalid"
+                    emptyText="Name is required"
+                    validate={isInvalidName}
+                    />
+                    <button type="submit">Submit</button>
+              </FormManager>
+       </div>
+     </div>
+  );
+}
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+export default App;
+
+```
+
+### InputManager.TextArea ----- Props
+
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
+|required     |  if input filed is required deuring submit      |   false |
+|errorClass     |  css style className which will be apllied to input element when the field is invalid    |   false |
+| label | to display a label on top of input      |    false |
+| invalidText | text to display when the field is invalid      |    false |
+| emptyText |text to display when the field is empty       |    false |
+| validate | function to validate if the field is invalid or not      |    false |
+| HeaderComponent | a react component to display on top of input element      |    false |
+| FooterComponent |  a react component to display at bottom of input element and it will receive an error in props; |    false |
+| onChange | function will be called on every change and it will receive an (id, value) as params    |    false |
+| all other input props | all the props which are passed to an `<textarea/>` input element    |    false |
+
+
+
+#### 4. RadioInput
+
+```javascript
+import React, { memo } from 'react';
+import {InputManager, FormManager} from 'react-web-form'
+import './App.css';
+
+
+function App() {
+
+  const onSubmit = (data,resetForm) => {
+    console.log({data});
+    resetForm();
+  }
+  const isInvalidAnimal = (val) => val.trim().length < 3;
+  return (
+    <div className="App">
+      <div className="app-conatiner">
+              <FormManager onSubmit={onSubmit}>
+                   <InputManager.Group 
+                   id="hobby"
+                   required  
+                   label="Hobbies --------" 
+                   emptyText="hobby required"
+                   >
+        
+                            <div>
+                            <InputManager.Radio name="hobby" value="Marketing" />
+                            <span>Marketing</span>
+                            </div>
+                    
+                            <div>
+                            <InputManager.Radio name="hobby" value="Fishing" />
+                            <span>Fishing</span>
+                            </div>
+                    
+                            <div>
+                            <InputManager.Radio name="hobby" value="hawking" />
+                            <span>hawking</span>
+                            </div>
+                    
+                            <div>
+                            <InputManager.Radio name="hobby" value="bashing" />
+                            <span>bashing</span>
+                            </div>
+                  </InputManager.Group>
+                    <button type="submit">Submit</button>
+                </FormManager>
+       </div>
+     </div>
+  );
+}
+
+export default App;
+
+```
+
+### InputManager.Group ----- Props
+
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
+|required     |  if input filed is required deuring submit      |   false |
+| label | to display a label on top of input      |    false |
+| invalidText | text to display when the field is invalid      |    false |
+| emptyText |text to display when the field is empty       |    false |
+| validate | function to validate if the field is invalid or not      |    false |
+| HeaderComponent | a react component to display on top of input element      |    false |
+| FooterComponent |  a react component to display at bottom of input element and it will receive an error in props; |    false |
+| onChange | function will be called on every change and it will receive an (id, value) as params    |    false |
+
+
+
+### InputManager.Radio ----- Props
+
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `name`     | required to make the only a single radio input to be selected in a group| `true` |
+| `value`     |  value to be updtated when form  is submitted    |   `true` |
+| radio input props | all other props available on a  `<input type="radio"/>`  element   |    false |
+
+
+
+#### 5. CheckBox
+
+```javascript
+import React, { memo } from 'react';
+import {InputManager, FormManager} from 'react-web-form'
+import './App.css';
+
+
+function App() {
+
+  const onSubmit = (data,resetForm) => {
+    console.log({data});
+    resetForm();
+  }
+  const isInvalidAnimal = (val) => val.trim().length < 3;
+  return (
+    <div className="App">
+      <div className="app-conatiner">
+              <FormManager onSubmit={onSubmit}>
+                   <InputManager.Group  
+                   id="Hobbies"
+                   label="Hobbies --------" 
+                   required 
+                   emptyText="hobby required"
+                   >
+        
+                                <div>
+                                <InputManager.CheckBox name="items" value="Marketing" />
+                                <span>Marketing</span>
+                                </div>
+                        
+                                <div>
+                                <InputManager.CheckBox name="items" value="Fishing" />
+                                <span>Fishing</span>
+                                </div>
+                        
+                                <div>
+                                <InputManager.CheckBox name="items" value="hawking" />
+                                <span>hawking</span>
+                                </div>
+                        
+                                <div>
+                                <InputManager.CheckBox name="items" value="bashing" />
+                                <span>bashing</span>
+                                </div>
+
+                    </InputManager.Group>
+                    <button type="submit">Submit</button>
+                </FormManager>
+       </div>
+     </div>
+  );
+}
+
+export default App;
+
+```
+
+
+
+### InputManager.Group ----- Props
+
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
+|required     |  if input filed is required deuring submit      |   false |
+| label | to display a label on top of input      |    false |
+| invalidText | text to display when the field is invalid      |    false |
+| emptyText |text to display when the field is empty       |    false |
+| validate | function to validate if the field is invalid or not      |    false |
+| HeaderComponent | a react component to display on top of input element      |    false |
+| FooterComponent |  a react component to display at bottom of input element and it will receive an error in props; |    false |
+| onChange | function will be called on every change and it will receive an (id, value) as params    |    false |
+
+### InputManager.CheckBox ----- Props
+
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `name`     | required to make a group of selected elements| `true` |
+| `value`     |  value to be updtated when form  is submitted    |   `true` |
+| other input props | all other props available on a  `<input type="checkbox"/>`  element   |    false |
+
+
+
+### `FormManager` ---- props
+
+ 
+| Props       | Description           | required  |
+| ------------- |:-------------:| -----:|
+| `onSubmit`     | function which will be called when the form is submitted and none of the field is invalid| `true` |
+|all other form props     |  all the other `<form/>` props can be passed     |   false |
+
+
+
+
+
