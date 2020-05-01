@@ -1,7 +1,18 @@
 {
   "name": "react-web-form",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.4",
+  "private": false,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warish56/react-web-form"
+  },
+  "babel": {
+    "presets": [
+      "@babel/react"
+    ]
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -14,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "publish:npm": "NODE_ENV=production && rm -rf dist && mkdir dist && npx babel src/Components --out-dir dist --copy-files && npx babel src/Context --out-dir dist --copy-files"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4"
   }
 }
