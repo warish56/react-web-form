@@ -96,7 +96,7 @@ const errorText = (isInvalid && gotFocus ? (value ? invalidText : emptyText) : '
     return (
         <div className="inputContainer">
             { HeaderComponent && React.isValidElement(<HeaderComponent/>) ? <HeaderComponent label={label}/> : <label>{label}</label>}
-            <input {...otherProps} className={`${className} ${errorClass}`} value={value} onBlur={onInputBlur} required={required} onChange={onInputChange} onInvalid={onInvalidCalled}/>
+            <input {...otherProps} className={`${className} ${ errorText ? errorClass : ''}`} value={value} onBlur={onInputBlur} required={required} onChange={onInputChange} onInvalid={onInvalidCalled}/>
             {FooterComponent && React.isValidElement(<FooterComponent/>) ? <FooterComponent error={errorText}/> : <Error  text={errorText}/>}
         </div>
     )
