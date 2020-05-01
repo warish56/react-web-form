@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import './App.css';
-import FormManager from './Components/FormManager';
-import InputManager from './Components/Inputs/Inputmanager';
+
+import {InputManager, FormManager} from './Components'
 
 import Error from './Components/Error';
 
@@ -45,7 +45,16 @@ function App() {
         invalidText="City is invalid"
         emptyText="City is required"
         validate={validateName}
+        list="cities"
         />
+
+<datalist id="cities">
+    <option value="Chocolate"/>
+    <option value="Coconut"/>
+    <option value="Mint"/>
+    <option value="Strawberry"/>
+    <option value="Vanilla"/>
+    </datalist>
 
         <InputManager.Select 
         className="input-text"
@@ -54,10 +63,19 @@ function App() {
           emptyText="Animal is required" 
           required 
           placeholder="Select Animal">
+             <optgroup label="Theropods">
             <option value="dog">Dog</option>
             <option value="cat">Cat</option>
             <option value="hamster">Hamster</option>
             <option value="parrot">Parrot</option>
+            </optgroup>
+
+            <optgroup label="animal">
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="hamster">Hamster</option>
+            <option value="parrot">Parrot</option>
+            </optgroup>
         </InputManager.Select>
 
 
