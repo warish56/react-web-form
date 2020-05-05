@@ -1,9 +1,9 @@
 {
   "name": "react-web-form",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "dist/Components/index.js",
+  "module": "dist/Components/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/warish56/react-web-form"
