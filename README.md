@@ -57,6 +57,7 @@ export default App;
 | ------------- |:-------------:| -----:|
 | `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
 |required     |  if input filed is required deuring submit      |   false |
+|defaultValue     |  value which will be initially set       |   false |
 |errorClass     |  css style className which will be apllied to input element when the field is invalid    |   false |
 | label | to display a label on top of input      |    false |
 | invalidText | text to display when the field is invalid      |    false |
@@ -119,6 +120,7 @@ export default App;
 | ------------- |:-------------:| -----:|
 | `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
 |required     |  if input filed is required deuring submit      |   false |
+|defaultValue     |  value which will be initially selected       |   false |
 |errorClass     |  css style className which will be apllied to input element when the field is invalid    |   false |
 | label | to display a label on top of input      |    false |
 | invalidText | text to display when the field is invalid      |    false |
@@ -177,6 +179,7 @@ export default App;
 | ------------- |:-------------:| -----:|
 | `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
 |required     |  if input filed is required deuring submit      |   false |
+|defaultValue     |  value which will be initially set       |   false |
 |errorClass     |  css style className which will be apllied to input element when the field is invalid    |   false |
 | label | to display a label on top of input      |    false |
 | invalidText | text to display when the field is invalid      |    false |
@@ -253,6 +256,7 @@ export default App;
 | ------------- |:-------------:| -----:|
 | `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
 |required     |  if input filed is required deuring submit      |   false |
+|defaultValue     |  value which will be initially selected in case of radio , and an array of values which will be selected in case of checkbox       |   false |
 | label | to display a label on top of input      |    false |
 | invalidText | text to display when the field is invalid      |    false |
 | emptyText |text to display when the field is empty       |    false |
@@ -341,6 +345,7 @@ export default App;
 | ------------- |:-------------:| -----:|
 | `id`     | same key will be used to identify the input field when the form will be submitted.| `true` |
 |required     |  if input filed is required deuring submit      |   false |
+|defaultValue     |  value which will be initially selected in case of radio , and an array of values which will be selected in case of checkbox       |   false |
 | label | to display a label on top of input      |    false |
 | invalidText | text to display when the field is invalid      |    false |
 | emptyText |text to display when the field is empty       |    false |

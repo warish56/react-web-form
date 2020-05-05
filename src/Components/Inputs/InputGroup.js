@@ -28,7 +28,13 @@ import InputGroupContext from '../../Context/InputGroupContext'
 
             if(child.type.displayName === 'CheckBox'){
                 setCheckBox(true);
-                setValue(defaultValue ? {[defaultValue]: true}: {})
+                const values = {};
+                if(Array.isArray(defaultValue)){
+                    defaultValue.forEach((value) => {
+                        values[value] = true;
+                    } )
+                }
+                setValue(values)
                 gotCheckBox= true;
                 break;
             }
